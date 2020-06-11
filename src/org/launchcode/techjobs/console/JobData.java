@@ -52,6 +52,7 @@ public class JobData {
         loadData();
 
         return allJobs;
+
     }
 
     /**
@@ -76,12 +77,37 @@ public class JobData {
 
             String aValue = row.get(column);
 
-            if (aValue.contains(value)) {
+            if (aValue.toLowerCase().contains(value.toLowerCase())) {
                 jobs.add(row);
             }
         }
 
         return jobs;
+    }
+
+    public static ArrayList<HashMap<String, String>> findByValue (String value) {
+
+        loadData();
+
+        ArrayList<HashMap<String, String>> jobObs = new ArrayList<>();
+
+        for (HashMap<String, String> row : allJobs) {
+
+            for (String jobRes : row.keySet()) {
+
+                String result = row.get(jobRes);
+
+                if (result.toLowerCase().contains(value.toLowerCase())) {
+                    jobObs.add(row);
+                    break;
+                }
+
+            }
+
+        }
+
+        return jobObs;
+
     }
 
     /**
@@ -123,6 +149,41 @@ public class JobData {
             System.out.println("Failed to load job data");
             e.printStackTrace();
         }
+    }
+
+    public static ArrayList<HashMap<String, String>> printJobs(String column, String someJobs) {
+
+        loadData();
+
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+
+        for (HashMap<String, String> row : allJobs) {
+
+            String listing = row.get(column);
+
+            if (listing.contains(someJobs)) {
+
+                jobs.add(row);
+
+            }
+        }
+
+        for (int i = 0; i < jobs.size(); i++) {
+
+            for (HashMap<String, String> job : jobs) {
+
+                System.out.println("\n*****");
+                System.out.println("position type: " + job.get("position type"));
+                System.out.println("name: " + job.get("name"));
+                System.out.println("employer: " + job.get("employer"));
+                System.out.println("location: " + job.get("location"));
+                System.out.println("core competency: " + job.get("core competency"));
+                System.out.println("*****");
+
+            }
+        }
+
+        return jobs;
     }
 
 }
